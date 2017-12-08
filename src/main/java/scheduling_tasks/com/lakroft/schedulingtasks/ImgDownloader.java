@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 
 public class ImgDownloader {
 	public static String download(String url) throws IOException{
-		if (!url.contains("http:")) url = "http:" + url;
+		
 		HttpURLConnection connection = HttpConnector.getConnection(url); //
 		String imagePath = "";
 		
@@ -28,7 +28,7 @@ public class ImgDownloader {
 			out.close();
 			imagePath = imageFile.getAbsolutePath();
 		} else {
-			System.out.println("Connection responce code: " + connection.getResponseCode());
+			System.out.println("\nConnection responce code: " + connection.getResponseCode());
 			System.out.println("Response message: " + connection.getResponseMessage());
 		}
 		

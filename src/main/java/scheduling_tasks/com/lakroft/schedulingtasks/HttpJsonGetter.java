@@ -25,7 +25,7 @@ public class HttpJsonGetter {
 			byte[] data = baos.toByteArray();
 			jsonAnser = new String(data, "UTF-8");
 		} else {
-			System.out.println("Connection responce code: " + connection.getResponseCode());
+			System.out.println("\nConnection responce code: " + connection.getResponseCode());
 			System.out.println("Response message: " + connection.getResponseMessage());
 		}
 		return jsonAnser;

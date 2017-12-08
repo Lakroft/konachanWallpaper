@@ -13,8 +13,9 @@ public class ScheduledTasks {
 		
 		//************* получаем URL картинки ********************
 		String imageURL = KonachanWallPaperManager.instance().getImgURL();
+		if (!imageURL.startsWith("http")) imageURL = "http:" + imageURL;
 		
-		System.out.print("http:" + imageURL);
+		System.out.print(imageURL);
 		
 		//************* сохраняем файл ********************
 		String imagePath = ImgDownloader.download(imageURL);
