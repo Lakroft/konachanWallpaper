@@ -10,9 +10,9 @@ public class HttpJsonGetter {
 	public static String GetJson(String url) throws IOException {
 		String jsonAnser = "connection error";
 		
-		HttpURLConnection connection = HttpConnector.getConnection(url); //
+		HttpURLConnection connection = HttpConnector.instance().getConnection(url); //
 		
-		if(connection.getResponseCode()==201 || connection.getResponseCode()==200) {
+//		if(connection.getResponseCode()==201 || connection.getResponseCode()==200) {
 			
 			InputStream is = connection.getInputStream();
 			
@@ -24,10 +24,10 @@ public class HttpJsonGetter {
 			}
 			byte[] data = baos.toByteArray();
 			jsonAnser = new String(data, "UTF-8");
-		} else {
-			System.out.println("\nConnection responce code: " + connection.getResponseCode());
-			System.out.println("Response message: " + connection.getResponseMessage());
-		}
+//		} else {
+//			System.out.println("\nConnection responce code: " + connection.getResponseCode());
+//			System.out.println("Response message: " + connection.getResponseMessage());
+//		}
 		return jsonAnser;
 	}
 }

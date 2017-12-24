@@ -16,13 +16,17 @@ import scheduling_tasks.com.lakroft.json.KonachanDatum;
 public class KonachanWallPaperManager {
 	// статичный лист ссылок на обоины
 	
-	//http://konachan.com/post.json?tags=catgirl+tail&limit=3&page=0
+	//http://konachan.com/post.json?tags=catgirl+tail&limit=10&page=0
 	private static final String basicURLHead = "http://konachan.com/post.json?tags=";
-	private String tags = "catgirl+tail";
+	private String tags;
 	private static final String basicURLTail = "&limit=10&page=";
-	private static int pageNum = 0;
+	private static int pageNum = 1;
 	
-	private static String[] blackList = {"penis"}; //TODO: Сделать загрузку черного списка из проперти файла
+	private String[] blackList; //DONE: Сделать загрузку черного списка из проперти файла
+	
+	private static Boolean useSizeFilter = false;
+	private static Integer imgHeight = 1080;
+	private static Integer imgWidth = 1920;
 	
 	private static KonachanWallPaperManager instance = null;
 	
@@ -31,6 +35,25 @@ public class KonachanWallPaperManager {
 			instance = new KonachanWallPaperManager();
 		}
 		return instance;
+	}
+	
+	private KonachanWallPaperManager() {
+		this.tags = PropertiesLoader.instance().getProperty("tags", "catgirl+tail");
+//		String[] def ={
+//				"male"
+//				,"penis"
+//				,"pussy_juice"
+//				//,"pussy"
+//				}; 
+		//this.blackList = PropertiesLoader.instance().getInlinePropList("blacklist", def);
+		this.blackList = PropertiesLoader.instance().getInlinePropList("blacklist", 
+			new String[] {
+				"male"
+				,"penis"
+				,"pussy_juice"
+				,"pussy"
+			});
+		//TODO: Сделать загрузку параметров фильтра по размерам и размеров.
 	}
 	
 	private ArrayDeque<String> imgURLs = new ArrayDeque<String>();
@@ -55,7 +78,6 @@ public class KonachanWallPaperManager {
 			
 			Type itemsListType = new TypeToken<List<KonachanDatum>>() {}.getType();
 			// https://habrahabr.ru/post/253266/
-			
 			Gson gson = new Gson();
 			List<KonachanDatum> data = gson.fromJson(jsonAnser, itemsListType);
 			if (data == null || data.size() < 1) { // Проверяем, что на этой странице еще есть данные
@@ -64,9 +86,9 @@ public class KonachanWallPaperManager {
 			} else { pageNum++; }
 			
 			for (KonachanDatum curr : data) {
-				if (blackListPassed(curr.getTags())) {
+				if (blackListPassed(curr.getTags()) && imgSizePassed(curr)) {
 					imgURLs.add(curr.getJpegUrl());
-				} else System.out.println("passed " + curr.getSampleUrl());
+				} //else System.out.println("passed " + curr.getSampleUrl());
 			}
 			
 		} while (imgURLs.size() < 1);
@@ -78,6 +100,11 @@ public class KonachanWallPaperManager {
 				return false;
 			}
 		}
+		return true;
+	}
+	
+	private Boolean imgSizePassed(KonachanDatum datum) {
+		if(useSizeFilter && (datum.getHeight() < imgHeight || datum.getWidth() < imgWidth)) return false;
 		return true;
 	}
 }
