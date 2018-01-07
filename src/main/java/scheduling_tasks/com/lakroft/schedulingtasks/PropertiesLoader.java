@@ -52,4 +52,16 @@ public class PropertiesLoader {
 		}
 		return def;
 	}
+	public String[] getPropList(String name) {
+		ArrayList<String> result = new ArrayList<>();
+		
+		String proxy = getProperty(name);
+		if (proxy != null) result.add(proxy);
+			
+		for (int i = 0;;i++) {
+			proxy = getProperty(name + "." + String.valueOf(i));
+			if (proxy == null) return result.toArray(new String[result.size()]);
+			else result.add(proxy);
+		}
+	}
 }

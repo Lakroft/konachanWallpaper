@@ -29,8 +29,14 @@ public class HttpConnector {
 	public HttpConnector() {
 		this.proxyList = new ArrayList<>();
 		// TODO Читать из проперти файла настройку использования прокси
-		//TODO: Здесь загружать список прокси
-		proxyList.add(new ProxyRecord("31.182.52.156", 3129));
+		String[] proxies = PropertiesLoader.instance().getPropList("proxy");
+		for (String proxy : proxies) {
+			String[] list = proxy.split(",");
+			for (String entry : list) {
+				proxyList.add(ProxyRecord.StringToProxyRec(entry));
+			}
+		}
+		if (proxyList.isEmpty()) proxyList.add(new ProxyRecord("31.182.52.156", 3129));
 	}
 	
 	public HttpURLConnection getConnection(String urlString) throws IOException {

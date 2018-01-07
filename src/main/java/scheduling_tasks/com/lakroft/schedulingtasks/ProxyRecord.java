@@ -18,5 +18,9 @@ public class ProxyRecord {
 		this.port = port;
 	}
 	
-	//TODO: public static StringToProxyRec(String url)
+	public static ProxyRecord StringToProxyRec(String url) {
+		String[] proxy = url.split(":");
+		if (proxy.length != 2) return null;
+		return new ProxyRecord(proxy[0], Integer.parseInt(proxy[1]));
+	}
 }
