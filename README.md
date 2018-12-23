@@ -12,5 +12,5 @@ TODOs:
 -"Image file catalog" and "Keep downloaded images" properties in .properties file. 
 -"Scheduling time" property in .properties file.
 -Linux mode for gnome and cinnamon.
--Startup script and icon.
+-Startup script and icon. DONE:script
 -GUI.
