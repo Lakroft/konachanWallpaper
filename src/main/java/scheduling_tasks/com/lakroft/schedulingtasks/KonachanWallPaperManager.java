@@ -24,9 +24,9 @@ public class KonachanWallPaperManager {
 	
 	private String[] blackList; //DONE: Сделать загрузку черного списка из проперти файла
 	
-	private static Boolean useSizeFilter = false;
-	private static Integer imgHeight = 1080;
-	private static Integer imgWidth = 1920;
+	private Boolean useSizeFilter = false;
+	private Integer imgHeight = 1080;
+	private Integer imgWidth = 1920;
 
 	@Autowired
 	private HttpJsonGetter httpJsonGetter;
@@ -43,7 +43,10 @@ public class KonachanWallPaperManager {
 				,"pussy_juice"
 				,"pussy"
 			});
-		//TODO: Сделать загрузку параметров фильтра по размерам и размеров.
+		this.useSizeFilter = Boolean.parseBoolean(propertiesLoader.getProperty("size_filter", "false"));
+		this.imgHeight = Integer.parseInt(propertiesLoader.getProperty("min_image_height", "1080"));
+		this.imgWidth = Integer.parseInt(propertiesLoader.getProperty("min_image_width", "1920"));
+		//DONE: Сделать загрузку параметров фильтра по размерам и размеров.
 	}
 	
 	private ArrayDeque<String> imgURLs = new ArrayDeque<>();

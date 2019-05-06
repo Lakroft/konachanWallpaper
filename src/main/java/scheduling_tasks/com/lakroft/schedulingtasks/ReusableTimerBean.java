@@ -1,32 +1,28 @@
-package com.lakroft.spring.spring;
+package scheduling_tasks.com.lakroft.schedulingtasks;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 @Component
 public class ReusableTimerBean {
     private Timer timer;
+    @Autowired
+    private KonachanManager konachanManager;
+    @Autowired
+    private PropertiesLoader propertiesLoader;
 
     @PostConstruct
     public void timerStarter() {
-        startTimer(500L, 1000L);
-        try {
-            Thread.sleep(1000L);
-            startTimer(500L, 500L);
-            Thread.sleep(1000L);
-        } catch (InterruptedException ignored) {}
-        stopTimer();
+        Long period = Long.parseLong(propertiesLoader.getProperty("delay", "60"))*1000;
+        startTimer(1000L, period);
     }
 
     public void startTimer(Long delay, Long period) {
-        if (timer != null) {
-            stopTimer();
-        }
+        if (timer != null) { stopTimer(); }
         timer = new Timer("ReusableTimer");
         timer.scheduleAtFixedRate(new InnerTimerTask(), delay, period);
     }
@@ -39,11 +35,9 @@ public class ReusableTimerBean {
     }
 
     private class InnerTimerTask extends TimerTask {
-        private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-
         @Override
         public void run() {
-            System.out.println("Reusable Timer: " + dateFormat.format(new Date()));
+            konachanManager.getKonachan();
         }
     }
 }

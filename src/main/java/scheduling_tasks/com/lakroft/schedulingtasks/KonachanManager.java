@@ -6,12 +6,11 @@ import java.util.Date;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ScheduledTasks {
-	private Logger logger = LogManager.getLogger(ScheduledTasks.class);
+public class KonachanManager {
+	private Logger logger = LogManager.getLogger(KonachanManager.class);
 	@Autowired
 	private KonachanWallPaperManager konachanWallPaperManager;
 	@Autowired
@@ -21,7 +20,7 @@ public class ScheduledTasks {
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-	@Scheduled(initialDelay=1000,fixedDelay = 60000) // Задержка запуска 1 сек. Выполняется через каждые 60 сек.
+	//@Scheduled(initialDelay=1000,fixedDelay = 60000) // Задержка запуска 1 сек. Выполняется через каждые 60 сек.
 	public void getKonachan() {
 		try {
 			System.out.print(dateFormat.format(new Date()) + " URL: ");
