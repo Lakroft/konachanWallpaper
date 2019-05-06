@@ -18,16 +18,16 @@ import java.util.ArrayList;
 
 @Service
 public class HttpConnector {
-	private ArrayList<ProxyRecord> proxyList; // = new ArrayList<>() {new ProxyRecord("31.182.52.156", 3129)}; //{new ProxyRecord("31.182.52.156", 3129)};
-	private static Boolean useProxy = true;
+	private ArrayList<ProxyRecord> proxyList;
+	private Boolean useProxy = true;
 
 	@Autowired
 	private PropertiesLoader propertiesLoader;
 
 	@PostConstruct
 	private void initProxies() {
+		useProxy = Boolean.parseBoolean(propertiesLoader.getProperty("useproxy", "false"));
 		this.proxyList = new ArrayList<>();
-		// TODO Читать из проперти файла настройку использования прокси
 		String[] proxies = propertiesLoader.getPropList("proxy");
 		for (String proxy : proxies) {
 			String[] list = proxy.split(",");
@@ -56,8 +56,8 @@ public class HttpConnector {
 				connection.setRequestProperty("Content-length",  "0");
 				connection.setUseCaches(false);
 				connection.setAllowUserInteraction(false);
-				//connection.setConnectTimeout(2000);
-				//connection.setReadTimeout(2000);
+				connection.setConnectTimeout(10000);
+				connection.setReadTimeout(10000);
 				connection.connect();
 				if(connection.getResponseCode()==201 || connection.getResponseCode()==200) {
 					if (i > 0) {
@@ -69,9 +69,6 @@ public class HttpConnector {
 				}
 			} catch(Exception ignored) {}
 		}
-		//TODO: Генерировать эксэпшн
-		System.out.println("No Availabel Proxy");
-//		throw new RuntimeException("No Availabel Proxy");
-		return null;
+		throw new RuntimeException("No Availabel Proxy");
 	}
 }

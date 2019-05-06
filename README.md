@@ -9,7 +9,7 @@ TODOs:
 -Generate exception if all proxies down.
 -DONE:Proxies .properties file. Reads on start.
 -DONE:Tags and blacklist .properties file.
--"Image file catalog" and "Keep downloaded images" properties in .properties file. 
+-DONE:"Image file catalog" and "Keep downloaded images" properties in .properties file.
 -"Scheduling time" property in .properties file.
 -Linux mode for gnome and cinnamon.
 -Startup script and icon. DONE:script

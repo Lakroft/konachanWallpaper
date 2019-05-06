@@ -19,9 +19,7 @@ public class PropertiesLoader {
 			appProps.load(new FileInputStream("app.properties"));
 		} catch(Exception e) {
 			logger.error("No Properties file", e);
-//			e.printStackTrace();
 		}
-		//System.out.println(appProps.getProperty("name"));
 	}
 	
 	public String getProperty(String name, String def) {

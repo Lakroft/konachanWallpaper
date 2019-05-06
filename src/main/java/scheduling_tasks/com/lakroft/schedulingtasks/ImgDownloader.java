@@ -33,19 +33,12 @@ public class ImgDownloader {
 	
 	public String download(String url) throws IOException{
 		
-		HttpURLConnection connection = httpConnector.getConnection(url); //
-		String imagePath = "";
-		
-//		if(connection.getResponseCode()==201 || connection.getResponseCode()==200) {
+		HttpURLConnection connection = httpConnector.getConnection(url);
+		String imagePath;
 			
 		InputStream in = connection.getInputStream();
 		File imageFile = new File(decodeUrl(url));
-//		File directory = new File(imgCatalog);
-//		if (!directory.exists()) directory.mkdir();
-		imageFile.getParentFile().mkdirs();
-		imageFile.createNewFile();
-		System.out.println("Img path:" + imageFile.getAbsolutePath());
-
+		if (!imgCatalog.isEmpty()) imageFile.getParentFile().mkdirs();
 		OutputStream out = new BufferedOutputStream(new FileOutputStream(imageFile));
 		for ( int i; (i = in.read()) != -1; ) {
 			out.write(i);
@@ -64,10 +57,9 @@ public class ImgDownloader {
 				if (!filename.endsWith(".jpg") && !filename.endsWith(".jpeg") && !filename.endsWith(".png")) {
 					filename += ".jpg";
 				}
-				System.out.println("filename:" + filename);
 				return filename;
 			} catch (UnsupportedEncodingException e) {
-				System.out.println("Error decoding URL:" + url);
+				throw new RuntimeException("Error decoding URL:" + url);
 			}
 		}
 		return "test_image.jpg";
